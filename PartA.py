@@ -8,7 +8,36 @@ class Post:
         self.postdate = postdate
         self.posttime = posttime
 
-#Max heap function
+class Node: #Creating class node
+    def __init__(self, post):
+        self.post = post
+        self.left = None
+        self.right = None
+        
+#Hash Table: 1
+class Hash: #Creating hash table
+    def __init__(self):
+        self.hashTable = {} #Creates dictionary to insert the posts inside the hashtable
+
+    def sortingPostsByDate(self, posts): #Creating hashtable to organize posts by date to access posts by their unique time
+        for post in posts:
+            if post.postdate in self.hashTable: #Checks whether if the post date is in the hashtable to append it if not creates new entry
+                self.hashTable[post.postdate].append(post)
+            else:
+                self.hashTable[post.postdate] = [post]
+
+        sortedKeys = sorted(self.hashTable.keys()) #Here it sorts the dates of the hash table
+
+        sortedPosts = []
+        for key in sortedKeys: #Here it extends the sorted posts list with posts from each date in sorted order.
+            sortedPosts.extend(self.hashTable[key])
+
+        return sortedPosts
+
+#Binary Search Tree : 2
+
+
+#Max heap function: 3
 def heapify(heap, i):
     #Functions to calculate the index of left and right children.
     def left(i):
@@ -54,7 +83,16 @@ for post in posts:
 # Heapifying the list
 heapify(posts, 0)
 
+#Test case for hashtable:
+# Test sorting posts by date using a hash table
+postList = [post1, post2, post3, post4, post5]
+hashTable = Hash()
+sortedPosts = hashTable.sortingPostsByDate(postList)
+print("\nSorted posts by date:")
+for post in sortedPosts:
+    print(post.postID, post.views, post.creatorname, post.postdate, post.posttime)
 
+#Max heap test case:
 print("\nMax heap of posts:") #Excpected Outcome: Nora's post which has 10500 views
 for post in posts:
     print(f"{post.postID}, {post.views}, {post.creatorname}, {post.postdate}, {post.posttime}")
