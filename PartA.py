@@ -35,7 +35,27 @@ class Hash: #Creating hash table
         return sortedPosts
 
 #Binary Search Tree : 2
+def insert(root, post): #Function to insert a post node into the BST based on the post's date
 
+    if root is None:
+        return Node(post)
+    else:
+        if root.post.postdate < post.postdate:
+            root.right = insert(root.right, post)
+        else:
+            root.left = insert(root.left, post)
+    return root
+
+def findingPosts(root, startDate, endDate, result=[]): #Function to find posts within a specific time range in the binary search tree.
+    if root is None:
+        return result
+    if startDate <= root.post.postdate <= endDate:
+        result.append(root.post)
+    if root.post.postdate > startDate:
+        findingPosts(root.left, startDate, endDate, result)
+    if root.post.postdate < endDate:
+        findingPosts(root.right, startDate, endDate, result)
+    return result
 
 #Max heap function: 3
 def heapify(heap, i):
@@ -80,19 +100,35 @@ print("Original list of posts:") #Expected: it will print randomly since I used 
 for post in posts:
     print(f" The post ID:{post.postID}, The post views: {post.views}, The name of the creator of the post is: {post.creatorname}, The post Date: {post.postdate}, The post time: {post.posttime}")
 
-# Heapifying the list
-heapify(posts, 0)
+#Test Case for BST:
+# Creating a binary search tree and inserting posts
+root = None
+root = insert(root, post1)
+root = insert(root, post2)
+root = insert(root, post3)
+root = insert(root, post4)
+root = insert(root, post5)
+
+# Test finding posts within a specific time range
+startDate = "2024-04-27"
+endDate = "2024-04-29"
+postsInRange = findingPosts(root, startDate, endDate)
+print(f"\nPosts within the time range within", startDate, "till", endDate)
+for post in postsInRange:
+    print(post.postID, post.views, post.creatorname, post.postdate, post.posttime) #Expected Outcome: it will print the posts that ranges within 27 till 29 without including the post that was posted at date 30
+
 
 #Test case for hashtable:
-# Test sorting posts by date using a hash table
 postList = [post1, post2, post3, post4, post5]
 hashTable = Hash()
 sortedPosts = hashTable.sortingPostsByDate(postList)
 print("\nSorted posts by date:")
 for post in sortedPosts:
-    print(post.postID, post.views, post.creatorname, post.postdate, post.posttime)
+    print(f"Post ID:",post.postID,"Post View:", post.views,"Username of the post's creator:", post.creatorname,"Post's Date:", post.postdate,"Post's Time:", post.posttime) 
+
 
 #Max heap test case:
+heapify(posts, 0)
 print("\nMax heap of posts:") #Excpected Outcome: Nora's post which has 10500 views
 for post in posts:
     print(f"{post.postID}, {post.views}, {post.creatorname}, {post.postdate}, {post.posttime}")
